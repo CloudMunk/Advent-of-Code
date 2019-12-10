@@ -123,7 +123,12 @@ export default {
         }
     },
     created:{
-          
+          go () {
+                let f = x => Math.floor(x / 3) - 2
+                let go = x => f(x) <= 0 ? 0 : f(x) + go(f(x))
+                let run = func => input.split("\n").map(x => func(x)).reduce((a, b) => a + b)
+                console.log(`Part 1: ${run(f)}\nPart 2: ${run(go)}`)
+            }
         },
         methods: {
             calcFuel1 (inputField) {
@@ -136,21 +141,16 @@ export default {
                 let mass = input.split('\n').map(v => Number.parseInt(v))
                     this.totalSolution = mass.reduce((total, mass) => {return total + this.calcFuelneeded(mass)}, 0)
             },
-             calculateModule2 (input) {
-                 let newMass = input.split('\n').map(v => Number.parseInt(v))
-                for(let i =0; i < newMass.length; i++) {
-                        console.log(newMass)
-                    let currentMass = Math.floor(newMass / 3) - 2
-                    if (currentMass > 0)
-                        return this.secondTotalSolution + (currentMass[i] + this.calculateModule2(currentMass))
-                            currentMass = 0;
-                            return currentMass;
-                } 
+            go () {
+                let f = x => Math.floor(x / 3) - 2;
+                let go = x => f(x) <= 0 ? 0 : f(x) + go(f(x));
+                let run = func => input.split("\n").map(x => func(x)).reduce((a, b) => a + b);
+                console.log(`Part 1: ${run(f)}\nPart 2: ${this.secondTotalSolution = run(go)}`);
             }
         },
         mounted () {
             this.calcFuel(input),
-            this.calculateModule2(input)
+            this.go(input)
         }
 }
 </script>
