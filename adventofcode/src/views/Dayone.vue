@@ -38,48 +38,61 @@
         <p>
             What is the sum of the fuel requirements for all of the modules on your spacecraft?
         </p>
+        <p>
+            (Enter number and hit enter)
+        </p>
         <div class="submitSection">
-            <input  @keyup.enter="calcFuel(input)" v-model="input" type="text" placeholder="Insert number & hit enter" style="margin-bottom: 15px">
+            <input 
+                @keyup.enter="calcFuel1(inputField)" 
+                v-model="inputField" 
+                type="text" 
+                placeholder="Insert number & hit enter" 
+                style="margin-bottom: 15px">
             
         </div>
         
         <h3>Solution: {{solution }}</h3>
-        <h4>You input: {{ input }}</h4>
+        <h4>You input: {{ inputField }}</h4>
+
+        <h2>This is the solution for the entire dataset provided at the /input</h2>
+        <h3> {{ totalSolution }} </h3>
     </div>
 </template>
 
 <script>
 // import { TxtReader } from "txt-reader"
-// import input from 'raw-loader!../Inputs/input.txt'
+import input from 'raw-loader!../Inputs/input.txt'
 
 export default {
     data: function () {
         return {
             modules: 14,
-            input: 0,
-            solution: 0
+            inputField: 0,
+            input: input,
+            solution: 0,
+            totalSolution: 0,
         }
     },
     created:{
-        // function calcFuel () {
-        //         let sum = 0
-        //         let mass = this.modules
-        //         sum = Math.floor((mass/3) - 2)
-        //         this.solution = sum
-        //             return sum 
+          
         },
         methods: {
+            calcFuel1 (inputField) {
+                return this.solution = Math.floor(inputField/3)-2
+            },
             // console.log("calcFuel: ", calcFuel(modules))
-              calcFuel (input) {
-                let sum = 0
-                let mass = input
-                sum = Math.floor((mass/3) - 2)
-                return this.solution = sum
-              }
+            calcFuelneeded (mass) {
+                return Math.floor(mass/3)-2
+            },
+            calcFuel (input) {
+                let mass = input.split('\n').map(v => Number.parseInt(v))
+                console.log('This is the mass', mass)
+                    this.totalSolution = mass.reduce((total, mass) => {return total + this.calcFuelneeded(mass)}, 0)
+            }
+            
         },
         mounted () {
-            // let modules = this.modules
-            // this.calcFuel(modules)
+            this.calcFuel(input)
         }
 }
 </script>
