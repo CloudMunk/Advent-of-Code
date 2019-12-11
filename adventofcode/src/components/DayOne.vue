@@ -1,7 +1,8 @@
 <template>
   <div class="hello">
       <router-link to="/dayone"><h1>Day One</h1></router-link>
-      
+      <router-link to="daytwo"><h1>Day Two</h1></router-link>
+
   </div>
 </template>
 

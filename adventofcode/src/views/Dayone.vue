@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h1>This is the solution to Day One Task 1</h1>
         <h2>--- Day 1: The Tyranny of the Rocket Equation ---</h2>
         <p>
             Santa has become stranded at the edge of the Solar System while delivering 
@@ -52,9 +51,9 @@
         </div>
         
         <h3>Solution: {{solution }}</h3>
-        <h4>You input: {{ inputField }}</h4>
+        <h5>Your input: {{ inputField }}</h5>
 
-        <h2>This is the solution for the entire dataset provided at the <a href="https://adventofcode.com/2019/day/1/input" target="_blank">/input</a></h2>
+        <h3>This is the solution for the entire dataset provided at the <a href="https://adventofcode.com/2019/day/1/input" target="_blank">/input</a></h3>
         <h3> {{ totalSolution }} </h3>
         <br>
         <h1>Part 2</h1>
@@ -123,12 +122,6 @@ export default {
         }
     },
     created:{
-          go () {
-                let f = x => Math.floor(x / 3) - 2
-                let go = x => f(x) <= 0 ? 0 : f(x) + go(f(x))
-                let run = func => input.split("\n").map(x => func(x)).reduce((a, b) => a + b)
-                console.log(`Part 1: ${run(f)}\nPart 2: ${run(go)}`)
-            }
         },
         methods: {
             calcFuel1 (inputField) {
