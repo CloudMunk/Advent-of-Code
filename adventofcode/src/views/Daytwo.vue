@@ -73,6 +73,58 @@
         </p>
         <h2><strong>What value is left at position 0 after the program halts?</strong></h2>
         <h3>Solution: {{ solution }}</h3>
+        <br>
+        <h1>--- Part Two ---</h1>
+        <p>
+            "Good, the new computer seems to be working correctly! Keep it nearby during this mission - 
+            you'll probably use it again. Real Intcode computers support many more features than your new 
+            one, but we'll let you know what they are as you need them."
+        </p>
+        <p>
+            "However, your current priority should be to complete your gravity assist around the Moon. For 
+            this mission to succeed, we should settle on some terminology for the parts you've already 
+            built."
+        </p>
+        <p>
+            Intcode programs are given as a list of integers; these values are used as the initial state for 
+            the computer's memory. When you run an Intcode program, make sure to start by initializing memory 
+            to the program's values. A position in memory is called an address (for example, the first value 
+            in memory is at "address 0").
+        </p>
+        <p>
+            Opcodes (like 1, 2, or 99) mark the beginning of an instruction. The values used immediately 
+            after an opcode, if any, are called the instruction's parameters. For example, in the 
+            instruction 1,2,3,4, 1 is the opcode; 2, 3, and 4 are the parameters. The instruction 99 
+            contains only an opcode and has no parameters.
+        </p>
+        <p>
+            The address of the current instruction is called the instruction pointer; it starts at 0. 
+            After an instruction finishes, the instruction pointer increases by the number of values in 
+            the instruction; until you add more instructions to the computer, this is always 4 
+            (1 opcode + 3 parameters) for the add and multiply instructions. (The halt instruction would 
+            increase the instruction pointer by 1, but it halts the program instead.)
+        </p>
+        <h4>
+            "With terminology out of the way, we're ready to proceed. To complete the gravity assist, 
+            you need to determine what pair of inputs produces the output 19690720."
+        </h4>
+        <p>
+            The inputs should still be provided to the program by replacing the values at addresses 1 
+            and 2, just like before. In this program, the value placed in address 1 is called the noun, 
+            and the value placed in address 2 is called the verb. Each of the two input values will be 
+            between 0 and 99, inclusive.
+        </p>
+        <p>
+            Once the program has halted, its output is available at address 0, also just like before. 
+            Each time you try a pair of inputs, make sure you first reset the computer's memory to 
+            the values in the program (your puzzle input) - in other words, don't reuse memory from a 
+            previous attempt.
+        </p>
+        <h3>
+            Find the input noun and verb that cause the program to produce the output 19690720. 
+            What is 100 * noun + verb? (For example, if noun=12 and verb=2, the answer would be 1202.)
+        </h3>
+        <h1>Solution: {{ secondSolution }} </h1>
     </div>
 </template>
 
@@ -83,6 +135,7 @@ export default {
   data: function () {
         return {
            solution: 0,
+           secondSolution: 0,
            input: '1,0,0,3,1,1,2,3,1,3,4,3,1,5,0,3,2,9,1,19,1,19,5,23,1,23,5,27,2,27,10,31,1,31,9,35,1,35,5,39,1,6,39,43,2,9,43,47,1,5,47,51,2,6,51,55,1,5,55,59,2,10,59,63,1,63,6,67,2,67,6,71,2,10,71,75,1,6,75,79,2,79,9,83,1,83,5,87,1,87,9,91,1,91,9,95,1,10,95,99,1,99,13,103,2,6,103,107,1,107,5,111,1,6,111,115,1,9,115,119,1,119,9,123,2,123,10,127,1,6,127,131,2,131,13,135,1,13,135,139,1,9,139,143,1,9,143,147,1,147,13,151,1,151,9,155,1,155,13,159,1,6,159,163,1,13,163,167,1,2,167,171,1,171,13,0,99,2,0,14,0'
            // 
         }
@@ -93,7 +146,7 @@ export default {
         methods: {
             program1202(input) {
                 const s = input.split(`,`)
-                console.log('This is s', s)
+                // console.log('This is s', s)
                 s[1] = 12
                 s[2] = 2
                 for(let i = 0; i < s.length; i += 4) {
@@ -106,11 +159,38 @@ export default {
                         break
                     }
                 }
-                return this.solution = s.join(`,`) 
+                return this.solution = s[0] 
+            },
+            newProg (first, second, input) {
+                 const s = input.split(`,`)
+                // console.log('This is s', s)
+                s[1] = first
+                s[2] = second
+                for(let i = 0; i < s.length; i += 4) {
+                    const c = s.slice(i, i+4)
+                    if(c[0] == 1) {
+                        s[c[3]] = parseInt(s[c[1]]) + parseInt(s[c[2]])
+                    } else if (c[0] == 2) {
+                        s[c[3]] = s[c[1]] * s[c[2]]
+                    } else if(c[0] == 99) {
+                        break
+                    }
+                }
+                return this.solution = s[0] 
+            },
+            inputPairs(input) {
+                for(let i = 0; i < 100; i++) {
+                    for( let j = 0; j < 100; j++) {
+                        if(this.newProg(i, j, input) === 19690720) {
+                           return this.secondSolution = (100 * i) + j
+                        }
+                    }
+                } 
             }
         },
         mounted () {
             this.program1202(this.input)
+            this.inputPairs(this.input)
         }
 }
 </script>
