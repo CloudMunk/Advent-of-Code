@@ -31,28 +31,43 @@
             These wires cross at two locations (marked X), but the lower-left one is closer to the central 
             port: its distance is 3 + 3 = 6.
         </p>
-        <h4>
+        <h3>
             Here are a few more examples:
-        </h4>
+        </h3>
         <p>
-            <ul>
+            <ul >
                 <li>
-                    <strong>
                         R75,D30,R83,U83,L12,D49,R71,U7,L72
                         U62,R66,U55,R34,D71,R55,D58,R83 = distance 159
-                    </strong>
                 </li>
                 <li>
-                    <strong>
                         R98,U47,R26,D63,R33,U87,L62,D20,R33,U53,R51
                         U98,R91,D20,R16,D67,R40,U7,R15,U6,R7 = distance 135
-                    </strong>
                 </li>
             </ul>
         </p>
-        <h2>
+        <h3>
             What is the Manhattan distance from the central port to the closest intersection?
-        </h2>
+        </h3>
+        <h1>Solution(<a href="https://adventofcode.com/2019/day/3/input">input</a>): {{ solution }}</h1>
+        <br>
+        <h1>--- Part Two ---</h1>
+        <p>
+            It turns out that this circuit is very timing-sensitive; you actually need to minimize the 
+            signal delay.
+        </p>
+        <p>
+            To do this, calculate the number of steps each wire takes to reach each intersection; 
+            choose the intersection where the sum of both wires' steps is lowest. If a wire visits a 
+            position on the grid multiple times, use the steps value from the first time it visits that 
+            position when calculating the total value of a specific intersection.
+        </p>
+        <p>
+            The number of steps a wire takes is the total number of grid squares the wire has entered to 
+            get to that location, including the intersection being considered. Again consider the example 
+            from above:
+        </p>
+        <img src="" alt="">
     </div>
 </template>
 
@@ -117,8 +132,8 @@ export default {
                 // console.log(JSON.stringify(wires))
                 let intersections = []
 
-                wires[0].map((segment1) => {
-                    wires[1].map((segment2) => {
+                wires[0].map((segment1, position1) => {
+                    wires[1].map((segment2, position2) => {
                         if((segment1.from.x == segment1.to.x) ^ (segment2.from.x == segment2.to.x)) {
                             const vertical = segment1.from.x == segment1.to.x ? segment1 : segment2
                             const horizontal = segment1.from.x == segment1.to.x ? segment2 : segment1
@@ -133,7 +148,8 @@ export default {
                                 && horizontal.from.y >= minY && horizontal.from.y <= maxY) {
                                 intersections.push({
                                     x: vertical.from.x,
-                                    y: horizontal.from.y
+                                    y: horizontal.from.y,
+                                    steps: position1 + position2
                                 })
                             }
                         } 
@@ -149,7 +165,8 @@ export default {
     },
     mounted () {
            console.log(this.solve(this.input))
-           
+           this.solution = this.solve(this.input)
+
         }
 }
 </script>
