@@ -62,7 +62,8 @@ export default {
         return {
            solution: 0,
            input: `R75,D30,R83,U83,L12,D49,R71,U7,L72
-           U62,R66,U55,R34,D71,R55,D58,R83`
+           U62,R66,U55,R34,D71,R55,D58,R83`,
+           intersections: []
         }
     },
     methods: {
@@ -106,19 +107,22 @@ export default {
                     })
                     return segments
             },
-            print (variable) { 
-                console.log(JSON.stringify(variable, null, 2))
+            distances (intersections) {
+                let distances = intersections
+                    .filter(p => p.x != 0 || p.y != 0)
+                    .map(p => Math.abs(p.x) + Math.abs(p.y))
+                return Math.min(...distances)
             },
             solve (input) {
                 const wires = input.split(`\n`).map(wire => this.parse(wire))
-                console.log(JSON.stringify(wires))
+                // console.log(JSON.stringify(wires))
                 const intersections = []
 
                 wires[0].map((segment1) => {
                     wires[1].map((segment2) => {
                         if((segment1.from.x == segment1.to.x) ^ (segment2.from.x == segment2.to.x)) {
-                            const vertical = segment1.to.x == segment1.to.x ? segment1 : segment2
-                            const horizontal = segment1.to.x == segment1.to.x ? segment2 : segment1
+                            const vertical = segment1.from.x == segment1.to.x ? segment1 : segment2
+                            const horizontal = segment1.from.x == segment1.to.x ? segment2 : segment1
 
                             const minX = Math.min(horizontal.from.x, horizontal.to.x)
                             const maxX = Math.max(horizontal.from.x, horizontal.to.x)
@@ -133,16 +137,16 @@ export default {
                                     y: horizontal.from.y
                                 })
                             }
-                        }
-                    })
-                })
-                
+                        } 
+                    }) 
+                }, console.log(intersections))
             }
         
     },
     mounted () {
         //    console.log(this.solve(this.input))
            console.log(this.solve(this.input))
+        //    console.log(this.intersections)
         }
 }
 </script>
