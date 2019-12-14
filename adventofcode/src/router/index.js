@@ -29,6 +29,11 @@ const routes = [
     path: '/daythree',
     name: 'daythree',
     component: () => import('../views/Daythree.vue')
+  },
+  {
+    path: '/dayfour',
+    name: 'dayfour',
+    component: () => import('../views/Dayfour.vue')
   }
 
 ]

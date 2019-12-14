@@ -3,6 +3,7 @@
       <router-link to="/dayone"><h1>Day One</h1></router-link>
       <router-link to="/daytwo"><h1>Day Two</h1></router-link>
       <router-link to="/daythree"><h1>Day Three</h1></router-link>
+      <router-link to="/dayfour"><h1>Day Four</h1></router-link>
 
   </div>
 </template>
