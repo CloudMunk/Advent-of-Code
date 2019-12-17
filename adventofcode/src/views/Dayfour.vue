@@ -17,17 +17,19 @@
         methods: {
             crackVenusCode () {
                 const matching = []
-                // const x = 158126
-                // const y = 624574
 
                 for(let i = 158126; i <= 624574; i++) {
                     const s = i.toString()
                     const a = [...s]
-                    if(s.length == 6 && /(.)\1/.test(s) && s == a.sort().join``) {
+                    
+                    const count = {}
+                    a.map((x) => (count[x] || 0) + 1)
+                    
+                    if(s.length == 6 && Object.entries(count).find(tuple => tuple[1] == 2) && s == a.sort().join``) {
                         matching.push(s)
                     }
-                }
-                console.log(matching.length)
+                } console.log(matching.length)
+                this.solution = matching.length
             }
         },
         mounted () {
