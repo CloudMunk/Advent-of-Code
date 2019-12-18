@@ -16,12 +16,13 @@
         },
         methods: {
             crackVenusCode () {
-                const matching = []
 
+                const matching = []
+                
                 for(let i = 158126; i <= 624574; i++) {
                     const s = i.toString()
                     const a = [...s]
-                    
+
                     const count = {}
                     a.map((x) => (count[x] || 0) + 1)
                     
