@@ -5,7 +5,7 @@
             You arrive at the Venus fuel depot only to discover it's protected by a password. 
             The Elves had written the password on a sticky note, but someone threw it out.
         </p>
-        <h4>However, they do remember a few key facts about the password:</h4>
+        <h4 >However, they do remember a few key facts about the password:</h4>
         <ul class="textDeco">
             <li>
                 It is a six-digit number.
@@ -24,7 +24,7 @@
         <p>
             Other than the range rule, the following are true:
         </p>
-        <ul class="textDeco">
+        <ul class="textDeco" >
             <li>
                 111111 meets these criteria (double 11, never decreases).
             </li>
@@ -74,35 +74,88 @@
         },
         methods: {
             crackVenusCode () {
-                
-                const matching = []
-                
-                for(let i = 158126; i <= 624574; i++) {
-                    const s = i.toString()
-                    const a = [...s]
-                    
-                    const count = {}
-                    a.map((x) => (count[x] || 0) + 1)
-                    // console.log(count)
-                    // let filter = (a) => {return a.find(x => x[1] == 2)}
+                const matching = [];
 
-                    // a.reduce((total, filter) => {return total + this.filter}, 0)
-                    // return matching.push(a)
-
-                    if(/^[0-9][0-9][0-9][0-9][0-9][0-9]$/i && s == a.sort().join(``)) {
-                        matching.push(s)
+                for (let i = 158126; i <= 624574; i++) {
+                const stringNum = String(i);
+                //-------------------------------------------
+                let isIncreasing = false;
+                // let containsDouble = false;
+                let containsTriple = true
+                
+                
+                //-------------------------------------------
+                for (let j = 0; j < stringNum.length; j++) {
+                    if (j > 0) {
+                    // Checks if increasing
+                    if (stringNum[j - 1] <= stringNum[j]) {
+                        isIncreasing = true;
+                    } else {
+                        isIncreasing = false;
+                        break; 
                     }
-                    // if(s.length == 6 && Object.entries(count).find(matches => matches == matches[i]) && a.sort().join``))
-                    // matching.push(s)
-                    // s.length == 6 &&
-                    // Object.entries(count).find(tuple => tuple[1] == 2)
-                    // /[^0-9\/]/
-                } console.log(matching.length) 
+                    // If a pair and not part of three in a row but three in a row is still ok if there is a pair
+                    if (stringNum[j] === stringNum[j + 1] && stringNum[j] === stringNum[j + 2])
+                        containsTriple = false
+                    
+                    // TRIED: 1609 1232 902 981 173 0 710 1473 1417 880 964 1462 1102 791 
+                    // Solutions form others: 1462 1102
+                    }
+                }
+                
+                //------------------------------------------
+                if (isIncreasing && containsTriple) {
+                    matching.push(i)
+                }
                 this.solution = matching.length
+                }
+
+                console.log(matching.length);
+
+            },
+            possibleSolution() {
+                const day4 = "193651-624574";
+
+                const passCount = (str) => {
+                let a = str.split("-")[0];
+                let b = str.split("-")[1];
+                let count = 0;
+                let i = a.toString();
+                let j;
+                let k;
+                while (i < b) {
+                    j = 1;
+                    while (j < i.length) {
+                    k = 1;
+                    if (i[j] < i[j-1]) {
+                        let nextNum = i.substr(0,j).concat(i[j-1].repeat(i.length-j));
+                        i = nextNum;
+                        j = i.length;
+                    } else if (j == i.length-1) {
+                        while (k < i.length) {
+                        if (i[k] == i[k-1] && i[k] != i[k+1] && i[k] != i[k-2]) {
+                            count++;
+                            k = i.length;
+                        } else {
+                            k++;
+                        }
+                        }
+                        i = (parseInt(i) + 1).toString();
+                        j++;
+                    } else {
+                        j++;
+                    }
+                    }
+                }
+                return count && console.log(count);
+                };
+
+                passCount(day4);
             }
         },
         mounted () {
             this.crackVenusCode()
+            this.possibleSolution()
         }
     }
 </script>
